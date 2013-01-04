@@ -1,12 +1,12 @@
 /*!
  * TimeInput jquery.ui plugin 
  *  - Time entry with validation, and optional popup timepicker UI. 
- *  - Popup timepicker UI provided by jquery.ui.timepicker.js plugin.
+ *  - Popup timepicker UI provided by Francois Gelinas jquery.ui.timepicker.js plugin.
  *  - User input validated by sugarjs. 
  *
  * Author:      @marklarter - Mark Larter
  *
- * Copyright:   Copyright 2012-, Freeheel Group LLC, http://freeheelgroup.com.
+ * Copyright:   Copyright 2012-2013, Freeheel Group LLC, http://freeheelgroup.com.
  *
  * License:     MIT, GPL2
  * 
@@ -33,7 +33,8 @@
             "isRequired": false,
             "hasPicker": false,
             "hasButtons": false
-        };
+        },
+		timeRegex = /^((([0]?[1-9]|1[0-2])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?( )?(AM|am|aM|Am|PM|pm|pM|Pm))|(([0]?[0-9]|1[0-9]|2[0-3])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?))$/;
     
     // The plugin constructor.
     var timeInput = function(options, element) {
@@ -43,8 +44,13 @@
         this._defaults = defaults;
         this._name = pluginName;
 		
-		this._time = null;
-		this._timeMessage = "";
+		this._timeRegex = timeRegex;
+    
+		this._timeValue = {
+			isValid: false,
+			message: null,
+			timeDate: null
+		};
 			
         this.init();
     }
@@ -56,7 +62,7 @@
 		_init: function() {
 			if (this.options.hasPicker) {
 				var hasButtons = this.options.hasButtons;
-				$('#timeInput').timepicker({
+				$(this.element).timepicker({
 					showCloseButton: hasButtons,
 					showNowButton: hasButtons,
 					showDeselectButton: hasButtons && !this.options.isRequired,
@@ -66,11 +72,9 @@
 				});
 			}
 			else {
-				$('#timeInput').on('blur',
-					function(event) {
-						_setTime($('#timeInput').val());
-					}
-				);
+				$(this.element).on('blur', function(event) {
+					_setTime($('#timeInput').val());
+				});
 			}
 		},
 		
@@ -88,20 +92,49 @@
 			return isValid;
 		},
 		
-        _setTime: function(timeToSet) {
-			if (timeToSet === "") {
-				_time = null;
-				if (this.options.hasPicker) $('#timeInput').timepicker('setTime', timeToSet);
+		
+		_validateTime: function(timeString) {
+			var timeValue = {
+				isValid: false,
+				message: null,
+				timeDate: null
+			};
+            
+			if (_defaults.isRequired && (timeString === null || timeString === "")) {
+				timeValue.message = "Time is required";
 			}
 			else {
-				_time = Date.create(timeToSet);
-				if (_time.isValid()) {
-					if (this.options.hasPicker) { $('#timeInput').timepicker('setTime', _time.format("{HH}:{mm}")); }
-					else { $('#timeInput').val(_time.format("{HH}:{mm}")); }
+				var matches = timeString.match(_timeRegex);                        
+				if (matches) {
+					timeValue.isValid = true;
+					var timeDate = Date.create(timeString);
+					timeValue.timeDate = timeDate;
+					timeValue.message = (timeDate === null) ? "Null time" : timeDate.format("{Weekday} {Month} {ord}, {year} {HH}:{mm}:{ss}.{fff}");
+				}
+				else {
+					timeValue.message = "Invalid time";                   
 				}
 			}
+				
+			return timeValue;       
+		}
 
-			_getIsValid();
+        _setTime: function(timeToSet) {
+			this._timeValue = _validateTime(timeToSet);
+			var timeValue = this._timeValue;
+			$('#timeValue').text(timeValue.message);
+
+			if (timeToSet === "") {
+				if (this.options.hasPicker) { $(this.element).timepicker('setTime', timeToSet); }
+				else { $(this.element).val(""); }
+			}
+			else {
+				if (timeValue.isValid) {
+					var formattedTime = timeValue.timeDate.format("{HH}:{mm}");
+					if (this.options.hasPicker) { $(this.element).timepicker('setTime', formattedTime); }
+					else { $(this.element).val(formattedTime); }
+				}
+			}
         }
     
 		option: function(key, value) {
