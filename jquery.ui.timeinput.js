@@ -68,8 +68,7 @@
 			}
 			else {
 				$(this.element).on('blur', function(event) {
-                    var inst = $(this.element);
-					inst.timeInput("setTime", inst.val());
+					$(this.element).timeInput("setTime", $(this).val());
 				});
 			}
 		},
