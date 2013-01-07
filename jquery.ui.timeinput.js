@@ -47,10 +47,10 @@
 			timeDate: null
 		};
 			
-        this.init();
+        this._init();
     }
     
-    TimeInput.prototype = {
+    timeInput.prototype = {
         _create: function() {
         },
         
