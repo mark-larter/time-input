@@ -62,31 +62,16 @@
 					showNowButton: hasButtons,
 					showDeselectButton: hasButtons && !this.options.isRequired,
 					onClose: function (time, inst) {
-						this._setTime(time);
+						this.setTime(time);
 					}
 				});
 			}
 			else {
 				$(this.element).on('blur', function(event) {
-					this._setTime($('#timeInput').val());
+					this.setTime($('#timeInput').val());
 				});
 			}
 		},
-		
-		_getIsValid: function () {
-			var isValid = false;
-			if (this.options.isRequired && (_time === null)) { _timeMessage = "Time is required"; }
-			else if (isNaN(_time)) { _timeMessage = "Invalid time"; }
-			else {
-				isValid = true;
-				_timeMessage = (_time === null) ? "Null time" : _time.format("{Weekday} {Month} {ord}, {year} {HH}:{mm}:{ss}.{fff}");
-			}
-			
-			$('#timeValue').text(_timeMessage);
-
-			return isValid;
-		},
-		
 		
 		_validateTime: function(timeString) {
 			var timeValue = {
@@ -95,7 +80,7 @@
 				timeDate: null
 			};
             
-			if (_defaults.isRequired && (timeString === null || timeString === "")) {
+			if (this.options.isRequired && (timeString === null || timeString === "")) {
 				timeValue.message = "Time is required";
 			}
 			else {
@@ -114,7 +99,7 @@
 			return timeValue;       
 		},
 
-        _setTime: function(timeToSet) {
+        setTime: function(timeToSet) {
 			this._timeValue = _validateTime(timeToSet);
 			var timeValue = this._timeValue;
 			$('#timeValue').text(timeValue.message);
