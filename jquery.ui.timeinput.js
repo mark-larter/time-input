@@ -23,13 +23,8 @@
 // The semicolon before this function invocation protects against concatenated 
 // scripts or other plugins that are not closed properly.
 ;(function($, window, document, undefined) {
-    // Set up freeheelGroup namespace.
-    if (!$.freeheelGroup) {
-        $.freeheelGroup = {};
-    };
-    
-    $.timeInput.timeInput pluginName = "timeInput",
-        defaults = $.extend({
+	var pluginName = "timeInput",
+        defaults = {
             "isRequired": false,
             "hasPicker": false,
             "hasButtons": false
@@ -37,7 +32,7 @@
 		timeRegex = /^((([0]?[1-9]|1[0-2])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?( )?(AM|am|aM|Am|PM|pm|pM|Pm))|(([0]?[0-9]|1[0-9]|2[0-3])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?))$/;
     
     // The plugin constructor.
-    var timeInput = function(options, element) {
+    var timeInput = function(element, options) {
         this.options = $.extend({}, defaults, options || {});
         this.element = element;
         
