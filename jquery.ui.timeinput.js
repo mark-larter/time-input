@@ -62,13 +62,13 @@
 					showNowButton: hasButtons,
 					showDeselectButton: hasButtons && !this.options.isRequired,
 					onClose: function (time, inst) {
-						this.setTime(time);
+						$(this.element).timeInput("setTime", time);
 					}
 				});
 			}
 			else {
 				$(this.element).on('blur', function(event) {
-					this.setTime($('#timeInput').val());
+					$(this.element).timeInput("setTime", $('#timeInput').val());
 				});
 			}
 		},
