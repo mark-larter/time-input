@@ -140,7 +140,7 @@
     $.fn[pluginName] = function (options) {
         return this.each(function() {
             var pluginTag = "plugin_" + pluginName;
-            if (!$.data(this, pluginTag)) { $data(this, pluginTag, new timeInput(this, options)); }
+            if (!$.data(this, pluginTag)) { $.data(this, pluginTag, new timeInput(this, options)); }
         });
     };
 })(jQuery);
