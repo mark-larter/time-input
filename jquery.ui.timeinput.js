@@ -112,7 +112,7 @@
 			}
 				
 			return timeValue;       
-		}
+		},
 
         _setTime: function(timeToSet) {
 			this._timeValue = _validateTime(timeToSet);
@@ -130,9 +130,9 @@
 					else { $(this.element).val(formattedTime); }
 				}
 			}
-        }
+        },
     
 		option: function(key, value) {
-		},
+		}
     };
 })(jQuery);
