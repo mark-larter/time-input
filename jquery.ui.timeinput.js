@@ -62,7 +62,7 @@
 					showNowButton: hasButtons,
 					showDeselectButton: hasButtons && !this.options.isRequired,
 					onClose: function (time, inst) {
-						$(inst).timeInput("setTime", time);
+						$(this).timeInput("setTime", time);
 					}
 				});
 			}
