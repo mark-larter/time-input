@@ -87,7 +87,6 @@
             return this;
 		},
 		
-        // Private time validation.
 		_validateTime: function(timeString) {
 			var timeValue = {
 				isValid: false,
