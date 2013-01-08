@@ -118,7 +118,6 @@
         setTime: function(timeToSet) {
 			this._timeValue = _validateTime(timeToSet);
 			var timeValue = this._timeValue;
-			$('#timeValue').text(timeValue.message);
 
 			if (timeToSet === "") {
 				if (this.options.hasPicker) { $(this.element).timepicker('setTime', timeToSet); }
@@ -133,7 +132,11 @@
 			}
             
             return this;
-        }
+        },
+        
+        getTimeValue: function() {
+            // Public function to retrieve time structure.
+            return this._timeValue;
     };
 
 	// Hook up to widget bridge.
