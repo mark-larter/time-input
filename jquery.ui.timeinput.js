@@ -137,5 +137,5 @@
     };
 
 	// Hook up to widget bridge.
-	jQuery.widget.bridge("fg", timeInput);
+	$.widget.bridge("fg", timeInput);
 })(jQuery, window, document);
