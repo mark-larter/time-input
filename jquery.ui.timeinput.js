@@ -98,7 +98,7 @@
 				timeValue.message = "Time is required";
 			}
 			else {
-				var matches = timeString.match(_timeRegex);                        
+				var matches = timeString.match(this._timeRegex);                        
 				if (matches) {
 					timeValue.isValid = true;
 					var timeDate = Date.create(timeString);
@@ -114,14 +114,14 @@
 		},
 
         setTime: function(timeToSet) {
-			this._timeValue = _validateTime(timeToSet);
-			var timeValue = this._timeValue;
+			this._timeValue = this._validateTime(timeToSet);
 
 			if (timeToSet === "") {
 				if (this.options.hasPicker) { $(this.element).timepicker('setTime', timeToSet); }
 				else { $(this.element).val(""); }
 			}
 			else {
+                var timeValue = this._timeValue;
 				if (timeValue.isValid) {
 					var formattedTime = timeValue.timeDate.format("{HH}:{mm}");
 					if (this.options.hasPicker) { $(this.element).timepicker('setTime', formattedTime); }
