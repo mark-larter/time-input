@@ -26,9 +26,11 @@
 	var pluginName = "timeInput",
         defaults = {
             "isRequired": false,
+            "hasSeconds": false,
             "hasPicker": false,
             "hasButtons": false
         },
+        timeDisplayFormat = "{Weekday} {Month} {ord}, {year} {HH}:{mm}:{ss}",
 		timeRegex = /^((([0]?[1-9]|1[0-2])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?( )?(AM|am|aM|Am|PM|pm|pM|Pm))|(([0]?[0-9]|1[0-9]|2[0-3])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?))$/;
     
     // The plugin constructor.
@@ -39,6 +41,7 @@
         this._defaults = defaults;
         this._name = pluginName;
 		
+        this._timeDisplayFormat = timeDisplayFormat;
 		this._timeRegex = timeRegex;
     
 		this._timeValue = {
@@ -103,7 +106,7 @@
 					timeValue.isValid = true;
 					var timeDate = Date.create(timeString);
 					timeValue.timeDate = timeDate;
-					timeValue.message = (timeDate === null) ? "Null time" : timeDate.format("{Weekday} {Month} {ord}, {year} {HH}:{mm}:{ss}.{fff}");
+					timeValue.message = (timeDate === null) ? "Null time" : timeDate.format(this._timeDisplayFormat);
 				}
 				else {
 					timeValue.message = "Invalid time";                   
