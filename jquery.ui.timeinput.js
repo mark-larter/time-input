@@ -137,6 +137,7 @@
         getTimeValue: function() {
             // Public function to retrieve time structure.
             return this._timeValue;
+        }
     };
 
 	// Hook up to widget bridge.
