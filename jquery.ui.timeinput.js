@@ -76,7 +76,7 @@
 		option: function(key, value) {
             if ($.isPlainObject(key)) {
                 this.options = $.extend(true, this.options, key);
-            else if (key && typeof value === "undefined") {
+            else if (key && (typeof value == "undefined")) {
                 return this.options[key];
             }
             else {
