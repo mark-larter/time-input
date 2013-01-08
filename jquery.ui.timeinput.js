@@ -135,7 +135,7 @@
             return this;
         }
     };
-    
-    // Hook up to widget bridge.
-    $.widget.bridge("fg", timeInput);
 })(jQuery);
+
+// Hook up to widget bridge.
+$.Widget.bridge("fg", timeInput);
