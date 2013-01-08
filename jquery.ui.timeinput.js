@@ -135,7 +135,7 @@
             return this;
         }
     };
-})(jQuery);
 
-// Hook up to widget bridge.
-$.Widget.bridge("fg", timeInput);
+	// Hook up to widget bridge.
+	jQuery.widget.bridge("fg", timeInput);
+})(jQuery, window, document);
