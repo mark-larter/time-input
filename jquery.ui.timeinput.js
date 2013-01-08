@@ -87,7 +87,6 @@
             return this;
 		},
 		
-        // Private function.
 		_validateTime: function(timeString) {
 			var timeValue = {
 				isValid: false,
@@ -114,7 +113,6 @@
 			return timeValue;       
 		},
 
-        // Public function to set time.
         setTime: function(timeToSet) {
 			this._timeValue = _validateTime(timeToSet);
 			var timeValue = this._timeValue;
@@ -135,7 +133,6 @@
         },
         
         getTimeValue: function() {
-            // Public function to retrieve time structure.
             return this._timeValue;
         }
     };
