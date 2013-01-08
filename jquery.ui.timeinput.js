@@ -135,9 +135,6 @@
             return this;
         }
     };
-        
-    // Hook up to widget bridge.
-    $.widget.bridge("fg", timeInput);
     
     /*
     $.fn[pluginName] = function (options) {
@@ -148,3 +145,6 @@
     };
     */
 })(jQuery);
+
+// Hook up to widget bridge.
+$.widget.bridge("fg", timeInput);
