@@ -72,7 +72,21 @@
 				});
 			}
 		},
+    
+		option: function(key, value) {
+            if ($.isPlainObject(key)) {
+                this.options = $.extend(true, this.options, key);
+            else if (key && typeof value === "undefined") {
+                return this.options[key];
+            }
+            else {
+                this.options[key] = value;
+            }
+            
+            return this;
+		},
 		
+        // Private function.
 		_validateTime: function(timeString) {
 			var timeValue = {
 				isValid: false,
@@ -99,6 +113,7 @@
 			return timeValue;       
 		},
 
+        // Public function to set time.
         setTime: function(timeToSet) {
 			this._timeValue = _validateTime(timeToSet);
 			var timeValue = this._timeValue;
@@ -115,17 +130,20 @@
 					else { $(this.element).val(formattedTime); }
 				}
 			}
-        },
-    
-		option: function(key, value) {
-		}
+            
+            return this;
+        }
     };
         
-    // Plugin wrapper.
+    // Hook up to widget bridge.
+    $.widget.bridge("fg", timeInput);
+    
+    /*
     $.fn[pluginName] = function (options) {
         return this.each(function() {
             var pluginTag = "plugin_" + pluginName;
             if (!$.data(this, pluginTag)) { $.data(this, pluginTag, new timeInput(this, options)); }
         });
     };
+    */
 })(jQuery);
