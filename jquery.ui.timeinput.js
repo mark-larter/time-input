@@ -74,6 +74,8 @@
 					$(this).timeInput("setTime", $(this).val());
 				});
 			}
+			
+			this.setTime($(this.element).val());
 		},
     
 		option: function(key, value) {
