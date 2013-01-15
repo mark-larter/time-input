@@ -27,6 +27,8 @@
         defaults = {
             "isRequired": false,
             "hasSeconds": false,
+            "showError": true,
+            "errorClass": "errorInput",
             "hasPicker": false,
             "hasButtons": false
         },
@@ -99,7 +101,8 @@
 				timeDate: null
 			};
             
-			if (this.options.isRequired && (timeString === null || timeString === "")) {
+            var options = this.options;
+			if (options.isRequired && (timeString === null || timeString === "")) {
 				timeValue.message = "Time is required";
 			}
 			else {
@@ -114,6 +117,18 @@
 					timeValue.message = "Invalid time";                   
 				}
 			}
+
+            if (options.showError) {
+                var elInput = $(this.element);
+                if (timeValue.isValid) {
+                    elInput.removeClass(options.errorClass);
+                    elInput.attr('title', "");
+                }
+                else {
+                    elInput.addClass(options.errorClass);
+                    elInput.attr('title', timeValue.message);
+                }
+            }
 				
 			return timeValue;       
 		},
