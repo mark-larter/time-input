@@ -76,8 +76,9 @@
 					$(this).timeInput("setTime", $(this).val());
 				});
 			}
-			
-			this.setTime($(this.element).val());
+           
+            var initialValue = $(this.element).val();
+            if (initialValue && initialValue !== "") { this.setTime(initialValue); }
 		},
     
 		option: function(key, value) {
@@ -136,15 +137,16 @@
         setTime: function(timeToSet) {
 			this._timeValue = this._validateTime(timeToSet);
 
+            var hasPicker = this.options.hasPicker;
 			if (timeToSet === "") {
-				if (this.options.hasPicker) { $(this.element).timepicker('setTime', timeToSet); }
+				if (hasPicker) { $(this.element).timepicker('setTime', timeToSet); }
 				else { $(this.element).val(""); }
 			}
 			else {
                 var timeValue = this._timeValue;
 				if (timeValue.isValid) {
 					var formattedTime = timeValue.timeDate.format("{HH}:{mm}");
-					if (this.options.hasPicker) { $(this.element).timepicker('setTime', formattedTime); }
+					if (hasPicker) { $(this.element).timepicker('setTime', formattedTime); }
 					else { $(this.element).val(formattedTime); }
 				}
 			}
