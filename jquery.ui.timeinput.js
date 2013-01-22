@@ -103,7 +103,7 @@
 			};
             
             var options = this.options;
-			if (options.isRequired && (timeString === null || timeString === "")) {
+			if (options.isRequired && (timeString == null || timeString === "")) {
 				timeValue.message = "Time is required";
 			}
 			else {
@@ -112,7 +112,7 @@
 					timeValue.isValid = true;
 					var timeDate = Date.create(timeString);
 					timeValue.timeDate = timeDate;
-					timeValue.message = (timeDate === null) ? "Null time" : timeDate.format(this._timeDisplayFormat);
+					timeValue.message = (timeDate == null) ? "Null time" : timeDate.format(this._timeDisplayFormat);
 				}
 				else {
 					timeValue.message = "Invalid time";                   
