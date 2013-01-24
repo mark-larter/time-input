@@ -2,7 +2,7 @@
  * TimeInput jquery.ui plugin 
  *  - Time entry with validation, and optional popup timepicker UI. 
  *  - Popup timepicker UI provided by Francois Gelinas jquery.ui.timepicker.js plugin.
- *  - User input validated by sugarjs. 
+ *  - User input validated by regular expression, then by sugarjs.
  *
  * Author:      @marklarter - Mark Larter
  *
@@ -32,7 +32,6 @@
             "hasPicker": false,
             "hasButtons": false
         },
-        timeDisplayFormat = "{Weekday} {Month} {ord}, {year} {HH}:{mm}:{ss}",
 		timeRegex = /^((([0]?[1-9]|1[0-2])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?( )?(AM|am|aM|Am|PM|pm|pM|Pm))|(([0]?[0-9]|1[0-9]|2[0-3])(:|\.)[0-5][0-9]((:|\.)[0-5][0-9])?))$/;
     
     // The plugin constructor.
@@ -42,8 +41,14 @@
         
         this._defaults = defaults;
         this._name = pluginName;
-		
-        this._timeDisplayFormat = timeDisplayFormat;
+        
+        // Test for the presence of the Microsoft Ajax library. This is necessary due to conflicting Date.format implementations between
+        // the Microsoft Ajax library and the sugarjs library. This must wait until the constructor, rather than in global plugin definition,
+        // because the plugin instance's environment is what must be tested.
+        var isMsAjax = (typeof Sys !== "undefined");
+
+        this._timeDisplayFormat = isMsAjax ? "HH:mm" : "{HH}:{mm}";
+        this._fullDisplayFormat = isMsAjax ? "W MMM dd, yyyy HH:mm:ss" : "{Weekday} {Month} {ord}, {year} {HH}:{mm}:{ss}";
 		this._timeRegex = timeRegex;
     
 		this._timeValue = {
@@ -103,21 +108,25 @@
 			};
             
             var options = this.options;
-			if (options.isRequired && (timeString == null || timeString === "")) {
-				timeValue.message = "Time is required";
-			}
-			else {
-				var matches = timeString.match(this._timeRegex);                        
-				if (matches) {
-					timeValue.isValid = true;
-					var timeDate = Date.create(timeString);
-					timeValue.timeDate = timeDate;
-					timeValue.message = (timeDate == null) ? "Null time" : timeDate.format(this._timeDisplayFormat);
-				}
-				else {
-					timeValue.message = "Invalid time";                   
-				}
-			}
+            if (options.isRequired && (timeString == null || timeString === "")) {
+                timeValue.message = "Time is required";
+            }
+            else if (timeString == null || timeString === "") {
+                timeValue.isValid = true;
+                timeValue.message = "Time is empty";                   
+            }
+            else {
+                var matches = timeString.match(this._timeRegex);                        
+                if (matches) {
+                    timeValue.isValid = true;
+                    var timeDate = Date.create(timeString);
+                    timeValue.timeDate = timeDate;
+                    timeValue.message = timeDate.format(this._fullDisplayFormat);
+                }
+                else {
+                    timeValue.message = "Time is invalid";                   
+                }
+            }
 
             if (options.showError) {
                 var elInput = $(this.element);
@@ -145,7 +154,7 @@
 			else {
                 var timeValue = this._timeValue;
 				if (timeValue.isValid) {
-					var formattedTime = timeValue.timeDate.format("{HH}:{mm}");
+                    var formattedTime = timeValue.timeDate.format(this._timeDisplayFormat);
 					if (hasPicker) { $(this.element).timepicker('setTime', formattedTime); }
 					else { $(this.element).val(formattedTime); }
 				}
