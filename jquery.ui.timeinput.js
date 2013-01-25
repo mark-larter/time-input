@@ -65,12 +65,13 @@
         },
         
 		_init: function() {
-			if (this.options.hasPicker) {
-				var hasButtons = this.options.hasButtons;
+            var options = this.options;
+			if (options.hasPicker) {
+				var hasButtons = options.hasButtons;
 				$(this.element).timepicker({
 					showCloseButton: hasButtons,
 					showNowButton: hasButtons,
-					showDeselectButton: hasButtons && !this.options.isRequired,
+					showDeselectButton: hasButtons && !options.isRequired,
 					onClose: function (time, inst) {
 						$(this).timeInput("setTime", time);
 					}
