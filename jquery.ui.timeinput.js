@@ -148,8 +148,8 @@
 			this._timeValue = this._validateTime(timeToSet);
 
             var hasPicker = this.options.hasPicker;
-			if (timeToSet === "") {
-				if (hasPicker) { $(this.element).timepicker('setTime', timeToSet); }
+			if (timeToSet == null || timeToSet === "") {
+				if (hasPicker) { $(this.element).timepicker('setTime', ""); }
 				else { $(this.element).val(""); }
 			}
 			else {
